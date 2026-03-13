@@ -1,0 +1,34 @@
+def quick_sort(A, left , right):
+    if left<right:
+        q = partition(A,left,right)
+        print(f"q의 pviot값: {A[q]}")
+        quick_sort(A, left , q-1)
+        quick_sort(A, q+1 , right)
+        print(data)
+
+def partition(A, left , right):
+    pivot = A[left]
+    low = left +1
+    high = right
+    
+    while (low <high):
+        Ch_low = None
+        Ch_high = None
+        if pivot < A[low]:
+            Ch_low = A[low]
+        else:
+            low+=1
+        if pivot > A[high]:
+            Ch_high = A[high]
+        else:
+            high-= 1
+        if Ch_low is not None and Ch_high is not None:
+            A[low] , A[high] = Ch_high , Ch_low
+
+    A[left], A[high] = A[high] , A[left]
+    return high
+
+data = [5,3,8,4,1]
+quick_sort(data , 0 , len(data)-1)
+print(data)                
+                
