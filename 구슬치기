@@ -3,7 +3,7 @@ import sys
 
 input = sys.stdin.readline
 
-N, M = map(int, input().split())
+N, M = map(int, input().split(" "))
 board = [list(input().strip()) for _ in range(N)]
 print(board)
 dx = [-1, 1, 0, 0] #좌우 바향 움직임
