@@ -5,13 +5,13 @@ input = sys.stdin.readline
 
 N, M = map(int, input().split())
 board = [list(input().strip()) for _ in range(N)]
-
-dx = [-1, 1, 0, 0]
-dy = [0, 0, -1, 1]
+print(board)
+dx = [-1, 1, 0, 0] #좌우 바향 움직임
+dy = [0, 0, -1, 1] #위아래 방향 움직임
 
 def move(x, y, dx, dy):
     cnt = 0
-    while board[x+dx][y+dy] != '#' and board[x][y] != 'O':
+    while board[x+dx][y+dy] != '#' and board[x][y] != 'O': #중력에 따라 벽에 붙이히지 않는 선에서 제거
         x += dx
         y += dy
         cnt += 1
@@ -19,44 +19,44 @@ def move(x, y, dx, dy):
             break
     return x, y, cnt
 
-for i in range(N):
+for i in range(N): #구슬의 위치 값 저장(2차원 좌표형태로 저장)
     for j in range(M):
         if board[i][j] == 'R':
             rx, ry = i, j
         if board[i][j] == 'B':
             bx, by = i, j
 
-visited = set()
-queue = deque([(rx, ry, bx, by, 0)])
-visited.add((rx, ry, bx, by))
+visited = set() #
+queue = deque([(rx, ry, bx, by, 0)]) #튜플 형태로 공의 현재 위치를 튜플 형태로 묶어서 저장
+visited.add((rx, ry, bx, by)) #공의 방문 위치를 set형태로 저장
 
 while queue:
-    rx, ry, bx, by, depth = queue.popleft()
+    rx, ry, bx, by, depth = queue.popleft() #공의위치 및 깊이를 변수로 분리해서 저장
 
     if depth >= 10:
         break
 
-    for d in range(4):
+    for d in range(4): #현재위치와 왼쪽,오른쪽 ,위쪽 아래쪽을 move함수로 전달 후 반환값을 nr현재위치, c간 만큼의 양으로 저장 
         nrx, nry, rc = move(rx, ry, dx[d], dy[d])
         nbx, nby, bc = move(bx, by, dx[d], dy[d])
 
-        if board[nbx][nby] == 'O':
+        if board[nbx][nby] == 'O': #파란 공이 들어가면 안됨
             continue
 
         if board[nrx][nry] == 'O':
             print(depth + 1)
             sys.exit(0)
 
-        if nrx == nbx and nry == nby:
-            if rc > bc:
+        if nrx == nbx and nry == nby: #파랑공과 빨간공의 위치가 동일한 경우
+            if rc > bc: # 빨간 공이 더 많이 움직인 경우 
                 nrx -= dx[d]
                 nry -= dy[d]
-            else:
+            else: #파란공이 더 많이 움직인 경우 "###RB.....#"
                 nbx -= dx[d]
                 nby -= dy[d]
 
-        if (nrx, nry, nbx, nby) not in visited:
-            visited.add((nrx, nry, nbx, nby))
-            queue.append((nrx, nry, nbx, nby, depth + 1))
+        if (nrx, nry, nbx, nby) not in visited:  #과거의 위치(경우의 수)와 현재의 위치가 동일하지 않으면 새로운 위치 추가 및 현재 위치 업데이트 (하나의 공만 움직이는 경우도 다른 경우임)
+            visited.add((nrx, nry, nbx, nby)) 
+            queue.append((nrx, nry, nbx, nby, depth + 1)) #현재상태 업데이트
 
 print(-1)
