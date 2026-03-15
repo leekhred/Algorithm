@@ -1,0 +1,54 @@
+Board_Size = 3
+BoardA = [[2,2,2] , [4,4,4] , [8,8,8]]
+Total_Lst = []
+
+def shift_left(Board): 
+    rows = len(Board)
+    cols = len(Board[0])
+    
+    for i in range(rows): 
+        cnt = 1
+        for j in range(cols-1):
+            if Board[i][j] == 0:
+                Board[i][j] = Board[i][j+1]
+                for k in range(j+1, cols-1):
+                    Board[i][k] = Board[i][k+1]
+                Board[i][cols-cnt] = 0
+                cnt += 1
+            
+            if Board[i][j] == Board[i][j+1]:
+                Board[i][j] = Board[i][j] + Board[i][j+1]
+                for k in range(j+1, cols-1):
+                    Board[i][k] = Board[i][k+1]
+                Board[i][cols-cnt] = 0
+                cnt += 1
+    return Board
+
+def shift_right(Board):
+    new_board = []
+    for row in Board:
+        reversed_row = row[::-1]
+        shifted_row = shift_left([reversed_row])[0]
+        new_board.append(shifted_row[::-1])
+    return new_board
+
+def move(Board):
+    previous_board = [row[:] for row in Board]
+    
+    Board_L = shift_left([row[:] for row in Board])
+    Board_R = shift_right([row[:] for row in Board])
+    Board_U = list(map(list, zip(*shift_left([list(row) for row in zip(*Board)]))))
+    Board_D = list(map(list, zip(*shift_right([list(row) for row in zip(*Board)]))))
+    
+    for b in [Board_L, Board_R, Board_U, Board_D]:
+        if b != previous_board and b not in Total_Lst:
+            Total_Lst.append(b)
+            move([row[:] for row in b])
+
+move(BoardA)
+for b in Total_Lst:
+    for k in range(Board_Size):
+        print(b[k])
+    
+    print("==============\n")
+    
