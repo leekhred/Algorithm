@@ -1,12 +1,13 @@
 Board_Size = 3
 BoardA = [[2,2,2] , [4,4,4] , [8,8,8]]
-Total_Lst = []
+
+max_block = 0
 
 def shift_left(Board): 
     rows = len(Board)
     cols = len(Board[0])
     
-    for i in range(rows): 
+    for i in range(rows):
         cnt = 1
         for j in range(cols-1):
             if Board[i][j] == 0:
@@ -24,6 +25,7 @@ def shift_left(Board):
                 cnt += 1
     return Board
 
+
 def shift_right(Board):
     new_board = []
     for row in Board:
@@ -32,23 +34,27 @@ def shift_right(Board):
         new_board.append(shifted_row[::-1])
     return new_board
 
-def move(Board):
-    previous_board = [row[:] for row in Board]
+
+def move(Board, depth):
+    global max_block
     
+    # 현재 보드에서 최대값 갱신
+    for row in Board:
+        max_block = max(max_block, max(row))
+
+    # 5번 이동했으면 종료
+    if depth == 5:
+        return 0 #이전 함수로 돌아감 (반환 값은 상관 없음) ; 반복문에서는 break랑 같은 느낌
+
     Board_L = shift_left([row[:] for row in Board])
     Board_R = shift_right([row[:] for row in Board])
     Board_U = list(map(list, zip(*shift_left([list(row) for row in zip(*Board)]))))
     Board_D = list(map(list, zip(*shift_right([list(row) for row in zip(*Board)]))))
-    
-    for b in [Board_L, Board_R, Board_U, Board_D]:
-        if b != previous_board and b not in Total_Lst:
-            Total_Lst.append(b)
-            move([row[:] for row in b])
 
-move(BoardA)
-for b in Total_Lst:
-    for k in range(Board_Size):
-        print(b[k])
-    
-    print("==============\n")
-    
+    for b in [Board_L, Board_R, Board_U, Board_D]: #이전행렬과 이후행렬이 동일한 경우(움직이지 않는 경우는) 없애고 모두 5번 이동한 것으로 종료
+        move([row[:] for row in b], depth + 1)
+
+
+move(BoardA, 0)
+
+print(max_block)
