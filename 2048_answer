@@ -1,0 +1,92 @@
+import sys
+import copy
+
+input = sys.stdin.readline
+#내 코드와 공통점: 순환함수를 사용해서 상하좌우의 경우를 트리로 해결하려고 했다. 0인경우의 처리와 같은 경우의 처리를 순서대로 했다\
+# 내 코드와 다른점: 0으로 초기화 시킨 새 보드에 합친 행렬을 업데이트 했다. / 행렬을 바꾸지 않고 4가지 경우를 모두 작성하였다.
+N = int(input().strip())
+board = [list(map(int, input().split())) for _ in range(N)]
+
+answer = 0
+
+def move(board, dir):
+    new_board = [[0]*N for _ in range(N)] #새보드 생성 0으로 초기화
+    
+    if dir == 0:  # up
+        for j in range(N): 
+            idx = 0 #새 보드의 인덱스를 위함 
+            last = 0
+            for i in range(N):
+                if board[i][j] == 0: #0인경우
+                    continue
+                if last == board[i][j]: #0을 제외한 last값과 해당 행렬값이 동일 
+                    new_board[idx-1][j] *= 2 #새 보드의 이전 값에 합류
+                    last = 0 #ex) 2 2 2 인 경우를 한 번만 움직이기 위해
+                else:
+                    new_board[idx][j] = board[i][j]
+                    last = board[i][j]
+                    idx += 1
+
+    elif dir == 1:  # down
+        for j in range(N):
+            idx = N-1
+            last = 0
+            for i in range(N-1, -1, -1):
+                if board[i][j] == 0:
+                    continue
+                if last == board[i][j]:
+                    new_board[idx+1][j] *= 2
+                    last = 0
+                else:
+                    new_board[idx][j] = board[i][j]
+                    last = board[i][j]
+                    idx -= 1
+
+    elif dir == 2:  # left
+        for i in range(N):
+            idx = 0
+            last = 0
+            for j in range(N):
+                if board[i][j] == 0:
+                    continue
+                if last == board[i][j]:
+                    new_board[i][idx-1] *= 2
+                    last = 0
+                else:
+                    new_board[i][idx] = board[i][j]
+                    last = board[i][j]
+                    idx += 1
+
+    else:  # right
+        for i in range(N):
+            idx = N-1
+            last = 0
+            for j in range(N-1, -1, -1):
+                if board[i][j] == 0:
+                    continue
+                if last == board[i][j]:
+                    new_board[i][idx+1] *= 2
+                    last = 0
+                else:
+                    new_board[i][idx] = board[i][j]
+                    last = board[i][j]
+                    idx -= 1
+
+    return new_board
+
+
+def dfs(depth, board): 
+    global answer
+    
+    if depth == 5: 
+        for row in board:
+            answer = max(answer, max(row))
+        return
+    
+    for d in range(4):
+        next_board = move(board, d) #상하좌우의 4가지 경우를 포함해서 new_board 생성 (트리생성)
+        dfs(depth+1, next_board) #그 경우에서 다시 순환함수로 들어감
+
+
+dfs(0, board)
+print(answer)
