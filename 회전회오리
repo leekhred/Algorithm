@@ -1,0 +1,32 @@
+#1. answer을 0로 초기화
+#2. 0인 경우 열과 행이 뒤바뀌면서 값을 저장
+def solution(n):
+    answer = [list(0 for _ in range(n)) for _ in range(n)]
+    i = 0
+    k = 1
+    num = 1
+    while True:
+        if all(0 not in row for row in answer) == True:
+            for _ in range(k, 5):
+                for i in range(n):
+                    for j in range(i):
+                        answer[i][j], answer[j][i] = answer[j][i], answer[i][j]
+                answer.reverse()
+            break
+        if k == 4:
+            i +=1
+            k = 1
+        for j in range(0, n):
+            if answer[i][j] == 0:
+                answer[i][j] = num
+                num +=1
+            else:
+                for i in range(n):
+                    for j in range(i):
+                        answer[i][j], answer[j][i] = answer[j][i], answer[i][j]
+                answer.reverse()
+                k += 1
+                break
+    
+        
+    return answer
