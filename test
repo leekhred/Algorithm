@@ -1,36 +1,24 @@
-def quick_sort(A, left , right):
-    if left < right:
-        #print(A)
-        q = partition(A,left,right)
-        #print(f"q의 pviot값: {A[q]}")
-        quick_sort(A, left , q-1)
-        quick_sort(A, q+1 , right)
-        #print(A) #의미가 없는 이유는 quick_sort에서 partion함수로 바로 들어가기 때문
+"""문제분석
+1. wire 가 가장 많이 연결되어 있는 송전탑을 탐색
+2. max 송전탑 기준으로 wire 하나씩 제거
+3. """
 
-def partition(A, left , right):
-    pivot = A[left]
-    low = left +1
-    high = right
+def solution(n, wires):
     
-    while (low <= high):   #만약 인덱스 값이 (동일하게 될수있음) 무조건 하나는 움직이기 때문에 인덱스에 영향을 주고 다음 while루프를 벗어나게됨 
-        Ch_low = None
-        Ch_high = None
-        if pivot < A[low]:
-            Ch_low = A[low]
-        else:
-            low+=1
-        if pivot > A[high]:
-            Ch_high = A[high]
-        else:
-            high-= 1
-        if Ch_low is not None and Ch_high is not None:
-            A[low] , A[high] = Ch_high , Ch_low
-            #low += 1       # 여기서는 필요 X
-            #high -= 1      # 수정 3
+    count = {} 
+    for i in wires:
+        for j in i:
+            count[j] = count.get(j,0)+1 #get: 뒤에는 디폴트값\
+        max_num = max(count, key = count.get)
+    lst_new = wires     
+    for i in range(len(wires)):
+        if max_num  in wires[i]:
+            del lst_new[i]
+            answer = clear_func(lst_new,max_num)
+            
+    return answer
 
-    A[left], A[high] = A[high] , A[left]
-    return high
-
-data = [5,3,8,4,9,1,6,7]
-quick_sort(data , 0 , len(data)-1)
-print(data)
+def clear_func(lst_new, max_num): #순환함수 통해서 제거할 예정
+    
+    
+    
