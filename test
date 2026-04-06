@@ -1,19 +1,33 @@
+"""문제분석
+1. wire 을 순차 탐색 
+2.
+3. """
 
 def solution(n, wires):
-    
-    count = {} 
-    for i in wires:
-        for j in i:
-            count[j] = count.get(j,0)+1 #get: 뒤에는 디폴트값\
-        max_num = max(count, key = count.get)
-        max_keys = [k for k, v in count.items() if v == max_num]
-    lst_new = wires     
-    for i in range(len(wires)):
-        if max_num  in wires[i]:
-            del lst_new[i]
-            answer = clear_func(lst_new,max_num)
+    answer = -1
+    for i in range(len(wires)): #wire을 순차 탐색하여 삭제할 wire 지정
+        wires_tmp = wires
+        del_wire = wires_tmp.pop(i)
+        tmp_lst = [del_wire[0]]
+        count_del = 1 #n에서 뺄값 계산
+        
+        
+        while len(tmp_lst)>0:
+            tmp_num = tmp_lst.pop(0)
+            for piece in wires_tmp:
+                if tmp_num in piece:
+                    tmp_lst.append(piece[1-piece.index(tmp_num)])
+                    wires_tmp.remove(piece)
+                    count_del += 1
+                    
+        if answer >= 0 and answer > abs(count_del - (n - count_del)):
+            answer = abs(count_del - (n - count_del))
+        elif answer == -1:
+            answer = abs(count_del - (n - count_del))
+            
             
     return answer
 
-def clear_func(lst_new, max_num): #통해서 제거할 예정
-    while True
+        
+    
+    
