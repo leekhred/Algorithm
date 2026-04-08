@@ -1,33 +1,11 @@
-"""문제분석
-1. wire 을 순차 탐색 
-2.
-3. """
-
-def solution(n, wires):
-    answer = -1
-    for i in range(len(wires)): #wire을 순차 탐색하여 삭제할 wire 지정
-        wires_tmp = wires
-        del_wire = wires_tmp.pop(i)
-        tmp_lst = [del_wire[0]]
-        count_del = 1 #n에서 뺄값 계산
-        
-        
-        while len(tmp_lst)>0:
-            tmp_num = tmp_lst.pop(0)
-            for piece in wires_tmp:
-                if tmp_num in piece:
-                    tmp_lst.append(piece[1-piece.index(tmp_num)])
-                    wires_tmp.remove(piece)
-                    count_del += 1
-                    
-        if answer >= 0 and answer > abs(count_del - (n - count_del)):
-            answer = abs(count_del - (n - count_del))
-        elif answer == -1:
-            answer = abs(count_del - (n - count_del))
-            
-            
+def solution(triangle):
+    answer = 0
+    sum_num = []
+    sum_num = dfs(triangle, triangle[0] ,0 , 5, sum_num)
+    
     return answer
-
+    
+def dfs(triangle, index_pre, high_pre , limit, sum_num): #배열, 현재 인덱스, 높이 , 높이한계
+    if high_pre == limit-1: #말단 노드
+        sum_num += triangle[high_pre][index_pre]
         
-    
-    
