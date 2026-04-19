@@ -1,11 +1,26 @@
-def solution(triangle):
-    answer = 0
-    sum_num = []
-    sum_num = dfs(triangle, triangle[0] ,0 , 5, sum_num)
+def solution(n, s, a, b, fares):
+    global graph
+    global A_RouteLst
+    global B_RouteLst
     
-    return answer
     
-def dfs(triangle, index_pre, high_pre , limit, sum_num): #배열, 현재 인덱스, 높이 , 높이한계
-    if high_pre == limit-1: #말단 노드
-        sum_num += triangle[high_pre][index_pre]
+    graph = [{} for _ in range(len(fares))] # [{} , {} ,{} .... 이런 형태?]
+    for st , fin , fare in range(len(fares)):
+        graph[st][fin] = fare
+        graph[fin][st] = fare
+    A_RouteLst = []
+    B_RouteLst = []
+    
+    search(s, graph[s] , [])
+
+def search(head,graph_n , tmp_lst): #순환함수 search 매개변수는 graph내부의 딕셔너리
+    for key, value in graph_n.items():
+        if key not in tmp_lst[:-1]: #마지막 값은 더할 sum이 들어가 있음
+            tmp_lst.insert(0, )
+            tmp_lst.append(
+            search(key , graph[key] , tmp_lst)
         
+        
+    
+    
+    return answer 
