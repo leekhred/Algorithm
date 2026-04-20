@@ -11,16 +11,49 @@ def solution(n, s, a, b, fares):
     A_RouteLst = []
     B_RouteLst = []
     
-    search(s, graph[s] , [])
+    
+    search_A(s, graph[s] , [], a)
+    search_B(s, graph[s] , [], b)
+    
+    #1. 최소값A + 최소값B - 겹치는 값 (최소값 기준)
+    A_minValue = []
+    B_minValue = []
+    for i in A_RouteLst:
+        A_minValue.append(i[-1])
+    for j in B_RouteLst:
+        B_minValue.append(j[-1])
+        
+    
+    
+    
+def search_A(head,graph_n , tmp_lst, a): #순환함수 search 매개변수는 graph내부의 딕셔너리
+    for key, value in graph_n.items(): #graph_n = {head와 연결된 위치: 요금}
+        if key not in tmp_lst[:-1]: #지금까지 탐색됬던 경로가 포함되지 않는 경우
+            if key == a:
+                A_RouteLst.append(tmp_lst)
+                break
+            
+            tmp_lst.insert(0, key)
+            if head == s:
+                tmp_lst.append(value)
+            else:
+                tmp_lst[-1] += value
+            search(key , graph[key] , tmp_lst ,a)
 
-def search(head,graph_n , tmp_lst): #순환함수 search 매개변수는 graph내부의 딕셔너리
-    for key, value in graph_n.items():
-        if key not in tmp_lst[:-1]: #마지막 값은 더할 sum이 들어가 있음
-            tmp_lst.insert(0, )
-            tmp_lst.append(
-            search(key , graph[key] , tmp_lst)
+def search_B(head,graph_n , tmp_lst, b): #순환함수 search 매개변수는 graph내부의 딕셔너리
+    for key, value in graph_n.items(): #graph_n = {head와 연결된 위치: 요금}
+        if key not in tmp_lst[:-1]: #지금까지 탐색됬던 경로가 포함되지 않는 경우
+            if key == b:
+                B_RouteLst.append(tmp_lst)
+                break
+            
+            tmp_lst.insert(0, key)
+            if head == s:
+                tmp_lst.append(value)
+            else:
+                tmp_lst[-1] += value
+            search(key , graph[key] , tmp_lst ,b)
         
         
     
     
-    return answer 
