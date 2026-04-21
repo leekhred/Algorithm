@@ -1,23 +1,18 @@
 def solution(n, s, a, b, fares):
     global graph
-    global A_RouteLst
-    global B_RouteLst
-    
+    global RouteLst
+    global start
     
     graph = [{} for _ in range(len(fares))] # [{} , {} ,{} .... 이런 형태?]
     for st , fin , fare in range(len(fares)):
         graph[st][fin] = fare
         graph[fin][st] = fare
-    A_RouteLst = []
-    B_RouteLst = []
+    RouteLst = []
+    start = False
     
-    
-    search_A(s, graph[s] , [], a)
-    search_B(s, graph[s] , [], b)
+    search_1(graph[s] ,graph[s] , tmp_lst, a, b)
     
     #1. 최소값A + 최소값B - 겹치는 값 (최소값 기준)
-    A_minValue = []
-    B_minValue = []
     for i in A_RouteLst:
         A_minValue.append(i[-1])
     for j in B_RouteLst:
@@ -26,33 +21,47 @@ def solution(n, s, a, b, fares):
     
     
     
-def search_A(head,graph_n , tmp_lst, a): #순환함수 search 매개변수는 graph내부의 딕셔너리
-    for key, value in graph_n.items(): #graph_n = {head와 연결된 위치: 요금}
-        if key not in tmp_lst[:-1]: #지금까지 탐색됬던 경로가 포함되지 않는 경우
-            if key == a:
-                A_RouteLst.append(tmp_lst)
-                break
+def search_1(graph_a, graph_b ,tmp_lst, a , b): #순환함수 search 매개변수는 graph내부의 딕셔너리
+    for key  , value in graph_a.items(): #1.모든 경우 탐색
+        for key2 , value2 in graph_b.items():
+            if key not in tmp_lst[:-1] and key2 not in tmp_lst[:-1]:                
+                if key == key2: #2. 다음 경로의 위치가 동일한가?
+                    calc_tmplst(tmp_lst , key, value)
+                else:
+                    calc_tmplst(tmp_lst, key , value)
+                    calc_tmplst(tmp_lst, key2, value2)
             
-            tmp_lst.insert(0, key)
-            if head == s:
-                tmp_lst.append(value)
+                if key == a:
+                    search2(graph[key2] , tmp_lst, b)
+                    return
+                elif key2 == b:
+                    search2(graph[key] , tmp_lst, a)
+                    return
+                elif key == a and key2 == b:
+                    RouteLst.append(tmp_lst)
+                    return
+                else:
+                    search1(graph[key] , graph[key2] , tmp_lst , a, b)
+                    
+def search2(graph_n, tmp_lst, x):
+    for key , value in graph_n.items():
+        if key not in tmp_lst[:-1]:
+            if key == x:
+                calc_tmplst(tmp_lst , key , value)
+                RouteLst.append(tmp_lst)
+                break
             else:
-                tmp_lst[-1] += value
-            search(key , graph[key] , tmp_lst ,a)
+                calc_tmplst(tmp_lst , key , value)
+                search2(graph[key] , tmp_lst, x)
 
-def search_B(head,graph_n , tmp_lst, b): #순환함수 search 매개변수는 graph내부의 딕셔너리
-    for key, value in graph_n.items(): #graph_n = {head와 연결된 위치: 요금}
-        if key not in tmp_lst[:-1]: #지금까지 탐색됬던 경로가 포함되지 않는 경우
-            if key == b:
-                B_RouteLst.append(tmp_lst)
-                break
-            
-            tmp_lst.insert(0, key)
-            if head == s:
-                tmp_lst.append(value)
-            else:
-                tmp_lst[-1] += value
-            search(key , graph[key] , tmp_lst ,b)
+
+def calc_tmplst(tmp_lst , key , value): #계산 함수
+    tmp_lst.insert(0, key)
+    if start == False:
+        tmp_lst.append(value) #행적
+        start = True
+    else:
+        tmp_lst[-1]+= value #값
         
         
     
