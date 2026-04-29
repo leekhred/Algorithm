@@ -1,16 +1,32 @@
-def solution(n):
-    
-    result = dps("(" , 0 , n-1)
-    return result
-#2개일때 total겹치는거 해결
+class node:
+    def __init__(self):
+        self.value = None
+        self.right = None
+        self.left = None
 
-def dps(ch ,stack , total):
-    if (stack == 0 and  total == 1) or (total == 0):
-        return 1
-    else:
-        if stack == 0:
-            result = dps("(" , stack + 1 , total-1)
-        else:
-            result = dps("(" , stack+1 , total -1) + dps(")" , stack- 1, total)
+
+def mak_tree(s1,graph,x,y): #노드 객체(인덱스)
+    s1.value =  [x,y]
+    if 
+    
+#출력할때 인덱스로 바꿔주면 됨        
         
-        return result
+        
+        
+        
+def solution(nodeinfo):
+    s1 = node()
+    answer = [[][]]
+    max_y = 0
+    for coord in range(len(nodeinfo)):
+        if coord[1] > max:
+            max_y = coord
+    
+    graph = [[] for _ in range(max_y)]:
+        for coord in nodeinfo:
+            graph[coord[1]].append(coord[0])
+        
+    result = [row.sort() for row in graph if row]
+    
+    answer[0].append(nodeinfo.index([x,y])+1)
+    return answer
