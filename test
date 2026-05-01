@@ -1,13 +1,21 @@
-class node:
-    def __init__(self):
-        self.value = None
+class Node:
+    def __init__(self, x, y , x1_  , x2_):
+        self.value = [x,y]
         self.right = None
         self.left = None
+        
+        self.x1 = x1_ #해당 노드의 범위
+        self.x2 = x2_
+        
 
-
-def mak_tree(s1,graph,x,y): #노드 객체(인덱스)
-    s1.value =  [x,y]
-    if 
+def mak_tree(value,graph): #노드 객체(인덱스) 
+    
+    node = Node(x,y, x1_ , x2_)
+    node.left = mak_tree(value, graph)
+    node.right = mak_tree(value, graph)
+    
+    
+    return node
     
 #출력할때 인덱스로 바꿔주면 됨        
         
@@ -15,18 +23,22 @@ def mak_tree(s1,graph,x,y): #노드 객체(인덱스)
         
         
 def solution(nodeinfo):
-    s1 = node()
     answer = [[][]]
     max_y = 0
     for coord in range(len(nodeinfo)):
-        if coord[1] > max:
-            max_y = coord
+        if nodeinfo[coord][1] > max:
+            max_y = nodeinfo[coord][1]
+
     
     graph = [[] for _ in range(max_y)]:
-        for coord in nodeinfo:
-            graph[coord[1]].append(coord[0])
-        
-    result = [row.sort() for row in graph if row]
+    for coord in nodeinfo:
+        graph[coord[1]].append(coord[0])        
+    clear_graph = [row.sort() for row in graph]
+    
+    s1= mak_tree()
+    
+    
+    
     
     answer[0].append(nodeinfo.index([x,y])+1)
     return answer
