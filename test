@@ -1,29 +1,41 @@
 class Node:
-    def __init__(self, x, y , x1_  , x2_):
+    def __init__(self, x, y):
         self.value = [x,y]
         self.right = None
         self.left = None
         
-        self.x1 = x1_ #해당 노드의 범위
-        self.x2 = x2_
         
 
-def mak_tree(value,graph): #노드 객체(인덱스) 
+def mak_tree(graph,x1,x2,level,level_x): #level은 다음 트리레벨을 의미한다
     
-    node = Node(x,y, x1_ , x2_)
-    node.left = mak_tree(value, graph)
-    node.right = mak_tree(value, graph)
+    node = Node(graph[level][level_x] , level+1)
+    if level == 0: #말단노드의 위치가 가장 마지막인 경우
+        return Node
     
-    
-    return node
-    
-#출력할때 인덱스로 바꿔주면 됨        
+    cnt = 1
+        while graph[level-cnt] == False:
+            cnt+=1
+
+        for x_Value in graph[level-cnt]:  
+            if x1< x_Value and node.value[0] > x_Value:
+                node.left = mak_tree(graph , x1, node.value[0],level-cnt, x_Value)
+            elif x2 > x_Value and node.value[0] < x_Value:
+                node.right = mak_tree(graph , node.value[0], x2 ,level-cnt, x_Value)        
+        return Node
         
-        
-        
-        
+
+def preorder(node):
+    if not node:
+        return []
+    return [node.value] + preorder(node.left) + preorder(nodeinfo.index(node.value)+1)
+
+def postorder(node):
+    if not node:
+        return []
+    return postorder(node.left) + postorder(node.right) + [nodeinfo.index(node.value)+1]
+
+
 def solution(nodeinfo):
-    answer = [[][]]
     max_y = 0
     for coord in range(len(nodeinfo)):
         if nodeinfo[coord][1] > max:
@@ -34,11 +46,10 @@ def solution(nodeinfo):
     for coord in nodeinfo:
         graph[coord[1]].append(coord[0])        
     clear_graph = [row.sort() for row in graph]
+        
+    s1= mak_tree(graph, 0 , 100000 , len(clear_graph)-1,graph[-1][0])
     
-    s1= mak_tree()
+    answer = [[preorder(s1)][postorder(s1)]]
     
     
-    
-    
-    answer[0].append(nodeinfo.index([x,y])+1)
     return answer
