@@ -1,55 +1,8 @@
-class Node:
-    def __init__(self, x, y):
-        self.value = [x,y]
-        self.right = None
-        self.left = None
-        
-        
-
-def mak_tree(graph,x1,x2,level,level_x): #level은 다음 트리레벨을 의미한다
-    
-    node = Node(graph[level][level_x] , level+1)
-    if level == 0: #말단노드의 위치가 가장 마지막인 경우
-        return Node
-    
-    cnt = 1
-        while graph[level-cnt] == False:
-            cnt+=1
-
-        for x_Value in graph[level-cnt]:  
-            if x1< x_Value and node.value[0] > x_Value:
-                node.left = mak_tree(graph , x1, node.value[0],level-cnt, x_Value)
-            elif x2 > x_Value and node.value[0] < x_Value:
-                node.right = mak_tree(graph , node.value[0], x2 ,level-cnt, x_Value)        
-        return Node
-        
-
-def preorder(node):
-    if not node:
-        return []
-    return [node.value] + preorder(node.left) + preorder(nodeinfo.index(node.value)+1)
-
-def postorder(node):
-    if not node:
-        return []
-    return postorder(node.left) + postorder(node.right) + [nodeinfo.index(node.value)+1]
-
-
-def solution(nodeinfo):
-    max_y = 0
-    for coord in range(len(nodeinfo)):
-        if nodeinfo[coord][1] > max:
-            max_y = nodeinfo[coord][1]
-
-    
-    graph = [[] for _ in range(max_y)]:
-    for coord in nodeinfo:
-        graph[coord[1]].append(coord[0])        
-    clear_graph = [row.sort() for row in graph]
-        
-    s1= mak_tree(graph, 0 , 100000 , len(clear_graph)-1,graph[-1][0])
-    
-    answer = [[preorder(s1)][postorder(s1)]]
+#0. 원래 메시지를 리스트로 분리
+#1. 메시지를 #으로 대신해서 새롭게 표현함 (이때 공백은 #무시)
+#2. #으로 만든 메시지를 split으로 리스트 만듬
+#3. 인덱스는 동일하기 때문에 #으로만든 메시지의 단어를 대신해서 넣어줌으로써 검사
+def solution(message, spoiler_ranges):
     
     
     return answer
