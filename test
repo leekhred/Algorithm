@@ -1,21 +1,7 @@
-#0. 원래 메시지를 리스트로 분리
-#1. 메시지를 #으로 대신해서 새롭게 표현함 (이때 공백은 #무시)
-#2. #으로 만든 메시지를 split으로 리스트 만듬
-#3. 인덱스는 동일하기 때문에 #으로만든 메시지의 단어를 대신해서 넣어줌으로써 검사
-def solution(message, spoiler_ranges):
-    lst1 = message.split(" ")
-    lst_message = list(message)
-    for i in spoiler_ranges:
-        for j in range(i[0] , i[1]+1):
-            lst_message[j] = "#" if lst_message[j] != " " else lst_message[j]
-    lst2 = "".join(lst_message).split(" ")
-    result = 0
-    for i in range(len(lst1)):
-        if lst2[i] in "#":
-            if lst1[i] not in lst2:
-                result +=1
-            lst2[i] = lst1[i]
-                
-    
-    
-    return result
+#1. 팀원별 (일련번호, 매출액) 으로 분리
+#2. dps사용
+#3. 팀원별 bool활용해서 갔던 경로 폐쇄 
+#4/ 나온값 해겨
+def solution(sales, links):
+    answer = 0
+    return answer
